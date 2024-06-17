@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Car {
+  id           String   @id @default(uuid())
+  userId       String
+  name         String   @db.Text
+  cv           String   @db.Text
+  transmission String   @db.Text
+  people       String   @db.Text
+  photo        String   @db.Text
+  priceDay     String   @db.Text
+  engine       String   @db.Text
+  type         String   @db.Text
+  isPublish    Boolean?
+
+  orders Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id String @id @default(uuid())
+
+  carId        String   @db.Text
+  carName      String   @db.Text
+  userId       String   @db.Text
+  orderDate    DateTime @default(now())
+  orderEndDate DateTime @default(now())
+  status       String   @db.Text
+  totalAmount  String   @db.Text
+
+  car Car @relation(fields: [carId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([carId])
+  @@index([userId])
+}
