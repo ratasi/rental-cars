@@ -2,6 +2,8 @@ import { Navbar } from "@/components/Shared/Navbar";
 import { db } from "@/lib/db";
 import { HeaderCars } from "./components/HeaderCars";
 import { FiltersAndListCars } from "./components/FiltersAndListCars";
+import { Suspense } from "react";
+import { SkeletonCars } from "@/components/Shared/SkeletonCars";
 
 export default async function pageCars() {
   const cars = await db.car.findMany({
